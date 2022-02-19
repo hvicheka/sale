@@ -12,7 +12,6 @@ class Sale extends Model
     protected $guarded = ['id'];
 
     protected $appends = [
-        'photo',
         'profit'
     ];
 
