@@ -7,7 +7,6 @@ use App\Sale;
 use App\User;
 use Gate;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
 class SaleController extends Controller
@@ -98,13 +97,6 @@ class SaleController extends Controller
     {
         $sale->update($request->all());
 
-        if ($request->input('photo', false)) {
-            if (!$sale->photo || $request->input('photo') !== $sale->photo->file_name) {
-                $sale->addMedia(storage_path('tmp/uploads/' . $request->input('photo')))->toMediaCollection('photo');
-            }
-        } elseif ($sale->photo) {
-            $sale->photo->delete();
-        }
         return redirect()->route('admin.sales.index');
 
     }
