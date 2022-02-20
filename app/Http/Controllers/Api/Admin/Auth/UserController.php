@@ -11,17 +11,16 @@ class UserController extends Controller
 {
     public function profile(Request $request)
     {
-        $header = $request->header('Authorization');
-        $token = str_replace('Bearer ', '', $header);
+        $token = JWTAuth::getToken();
         $user = JWTAuth::authenticate($token);
         return new UserProfileResource($user);
     }
 
     public function update_profile(Request $request)
     {
-        $header = $request->header('Authorization');
-        $token = str_replace('Bearer ', '', $header);
+        $token = JWTAuth::getToken();
         $user = JWTAuth::authenticate($token);
+//        $apy = JWTAuth::getPayload($token)->toArray();
         $user->update($request->all());
         return new UserProfileResource($user);
 

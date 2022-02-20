@@ -31,19 +31,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $header = $request->header('Authorization');
-        $token = str_replace('Bearer ', '', $header);
+        $token = JWTAuth::getToken();
         JWTAuth::invalidate($token);
         return response()->json([
             'message' => 'User logged out successfully'
         ]);
     }
 
-    public function profile(Request $request)
-    {
-        $header = $request->header('Authorization');
-        $token = str_replace('Bearer ', '', $header);
-        $user = JWTAuth::authenticate($token);
-        return new UserProfileResource($user);
-    }
 }
