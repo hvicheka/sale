@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\Admin\UserResource;
+use App\Http\Resources\WithCustomerResource;
 use App\User;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,5 +54,16 @@ class UsersApiController extends Controller
         $user->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function customers()
+    {
+        $customers = User::query()
+            ->select(['id', 'name'])
+            ->whereHas('roles', function ($query) {
+                return $query->where('id', '2');
+            })
+            ->get();
+        return new WithCustomerResource($customers);
     }
 }
