@@ -64,6 +64,7 @@ class UsersApiController extends Controller
                 return $query->where('id', '2');
             })
             ->get();
-        return new WithCustomerResource($customers);
+
+        return WithCustomerResource::collection($customers);
     }
 }

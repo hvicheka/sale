@@ -12,6 +12,10 @@ Route::group(['prefix' => 'auth', 'as' => 'api.', 'namespace' => 'Api\Admin\Auth
 });
 
 Route::group(['as' => 'api.', 'namespace' => 'Api\Admin', 'middleware' => ['auth:sanctum']], function () {
+
+    // Customer
+    Route::get('customers', 'UsersApiController@customers');
+
     // Permissions
     Route::apiResource('permissions', 'PermissionsApiController');
 
@@ -21,6 +25,7 @@ Route::group(['as' => 'api.', 'namespace' => 'Api\Admin', 'middleware' => ['auth
     // Users
     Route::apiResource('users', 'UsersApiController');
 
-    Route::get('customers', 'UsersApiController@customers');
+    // Sales
+    Route::resource('sales', 'SaleController');
 
 });
