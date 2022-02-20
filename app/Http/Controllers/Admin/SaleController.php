@@ -96,9 +96,7 @@ class SaleController extends Controller
     public function update(Request $request, Sale $sale)
     {
         $sale->update($request->all());
-
         return redirect()->route('admin.sales.index');
-
     }
 
     /**
