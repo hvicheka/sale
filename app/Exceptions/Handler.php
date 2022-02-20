@@ -13,9 +13,6 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -121,21 +118,6 @@ class Handler extends ExceptionHandler
                 ], Response::HTTP_BAD_REQUEST);
             }
             if ($exception instanceof UnauthorizedHttpException) {
-                return response([
-                    'message' => $exception->getMessage()
-                ], Response::HTTP_UNAUTHORIZED);
-            }
-            if ($exception instanceof TokenExpiredException) {
-                return response([
-                    'message' => $exception->getMessage()
-                ], Response::HTTP_UNAUTHORIZED);
-            }
-            if ($exception instanceof TokenInvalidException) {
-                return response([
-                    'message' => $exception->getMessage()
-                ], Response::HTTP_UNAUTHORIZED);
-            }
-            if ($exception instanceof JWTException) {
                 return response([
                     'message' => $exception->getMessage()
                 ], Response::HTTP_UNAUTHORIZED);

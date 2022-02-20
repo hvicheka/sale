@@ -4,38 +4,41 @@ namespace App\Http\Controllers\Api\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Http\Resources\UserProfileResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $input = $request->only('email', 'password');
-        $jwt_token = null;
-
-        if (!$jwt_token = JWTAuth::attempt($input)) {
+        $email = $request->get('email');
+        if (preg_match('/(0|\+?\d{2})(\d{7,8})/', $email, $matches)) {
+            $credentials = ['phone' => $email, 'password' => $request->get('password')];
+        } elseif (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $credentials = ['email' => $email, 'password' => $request->get('password')];
+        } else {
+            $credentials = ['username' => $email, 'password' => $request->get('password')];
+        }
+        if (!Auth::attempt($credentials)) {
             return response()->json([
-                'success' => false,
-                'message' => 'Invalid Email or Password',
+                'message' => 'Credentials not match'
             ], Response::HTTP_UNAUTHORIZED);
         }
-
+        $user = Auth::user();
+        $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([
-            'token' => $jwt_token,
-            'token_type' => 'Bearer'
+            'access_token' => $token,
+            'token_type' => 'Bearer',
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        $token = JWTAuth::getToken();
-        JWTAuth::invalidate($token);
+        auth()->user()->currentAccessToken()->delete();
         return response()->json([
-            'message' => 'User logged out successfully'
-        ]);
+            'message' => 'Successfully logged out'
+        ], Response::HTTP_OK);
     }
 
 }

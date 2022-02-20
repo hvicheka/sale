@@ -4,25 +4,20 @@ namespace App\Http\Controllers\Api\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserProfileResource;
+use App\User;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
-    public function profile(Request $request)
+    public function profile()
     {
-        $token = JWTAuth::getToken();
-        $user = JWTAuth::authenticate($token);
-        return new UserProfileResource($user);
+        return new UserProfileResource(auth()->user());
     }
 
     public function update_profile(Request $request)
     {
-        $token = JWTAuth::getToken();
-        $user = JWTAuth::authenticate($token);
-//        $apy = JWTAuth::getPayload($token)->toArray();
+        $user = User::findOrFail(auth()->id());
         $user->update($request->all());
         return new UserProfileResource($user);
-
     }
 }
