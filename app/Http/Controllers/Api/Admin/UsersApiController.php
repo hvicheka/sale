@@ -40,7 +40,7 @@ class UsersApiController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->all());
-        $user->roles()->sync($request->input('roles', []));
+        $user->roles()->sync($request->input('roles', [2]));
 
         return (new UserResource($user))
             ->response()

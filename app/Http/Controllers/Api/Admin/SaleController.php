@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Resources\SaleResource;
-use Illuminate\Http\Request;
+use App\Sale;
+use Symfony\Component\HttpFoundation\Response;
 
 class SaleController extends Controller
 {
@@ -16,6 +17,7 @@ class SaleController extends Controller
      */
     public function index()
     {
+        abort_if(Gate::denies('sale_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $sales = auth()->user()->sales()->paginate(20);
         return SaleResource::collection($sales);
     }
@@ -28,7 +30,9 @@ class SaleController extends Controller
      */
     public function store(StoreSaleRequest $request)
     {
-        //
+        abort_if(Gate::denies('sale_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $sale = Sale::create($request->validated() + ['user_id' => auth()->id()]);
+        return new SaleResource($sale);
     }
 
     /**
@@ -37,9 +41,10 @@ class SaleController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Sale $sale)
     {
-        //
+        $sale->load('customer');
+        return new SaleResource($sale);
     }
 
     /**
@@ -49,9 +54,10 @@ class SaleController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreSaleRequest $request, Sale $sale)
     {
-        //
+        $sale->update($request->validated());
+        return new SaleResource($sale);
     }
 
     /**
@@ -60,8 +66,9 @@ class SaleController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Sale $sale)
     {
-        //
+        $sale->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
