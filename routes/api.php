@@ -11,6 +11,11 @@ Route::group(['prefix' => 'auth', 'as' => 'api.', 'namespace' => 'Api\Admin\Auth
     });
 });
 
+Route::group(['prefix' => 'upload', 'as' => 'api.', 'namespace' => 'Api\Admin', 'middleware' => 'auth:sanctum'], function () {
+    Route::post('image', 'FileUploadController@upload_image');
+});
+
+
 Route::group(['as' => 'api.', 'namespace' => 'Api\Admin', 'middleware' => ['auth:sanctum']], function () {
 
     // Customer

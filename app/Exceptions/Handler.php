@@ -127,7 +127,7 @@ class Handler extends ExceptionHandler
                 'message' => 'Something Went Wrong'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
+        dd($exception);
         parent::render($request, $exception);
     }
 }

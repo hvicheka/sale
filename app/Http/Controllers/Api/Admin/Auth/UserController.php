@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserProfileResource;
 use App\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -14,10 +14,13 @@ class UserController extends Controller
         return new UserProfileResource(auth()->user());
     }
 
-    public function update_profile(Request $request)
+    public function update_profile(UpdateProfileRequest $request)
     {
         $user = User::findOrFail(auth()->id());
-        $user->update($request->all());
+        $user->update($request->validated());
+        if ($request->password) {
+            $user->update(['password' => bcrypt($request->password)]);
+        }
         return new UserProfileResource($user);
     }
 }

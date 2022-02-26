@@ -13,7 +13,13 @@
         <div class="card-header">
             Sale List
         </div>
-
+        <div class="card-body">
+            <form action="{{ route('admin.sales.index') }}">
+                <input type="text" id="start_date" name="stat_date">
+                <input type="text" id="end_date" name="end_date">
+                <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+            </form>
+        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class=" table table-bordered table-striped table-hover datatable datatable-Meal">
@@ -91,6 +97,9 @@
                     </tbody>
 
                 </table>
+                <div class="d-flex justify-content-center">
+                    {{ $sales->links() }}
+                </div>
             </div>
         </div>
     </div>
@@ -98,5 +107,10 @@
 @endsection
 
 @section('scripts')
-
+    <script>
+        $(function () {
+            $("#start_date").datepicker({});
+            $("#end_date").datepicker();
+        });
+    </script>
 @endsection

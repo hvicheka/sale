@@ -29,8 +29,10 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => ['required', 'string'],
+            'phone' => ['required', Rule::unique('users', 'phone')->ignore(auth()->id())],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore(auth()->id())],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ];
     }
 }

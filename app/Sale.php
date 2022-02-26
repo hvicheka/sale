@@ -15,6 +15,10 @@ class Sale extends Model
         'profit'
     ];
 
+    protected $attributes = [
+        'image' => 'def.png'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

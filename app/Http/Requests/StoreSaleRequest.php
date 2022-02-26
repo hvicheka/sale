@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreSaleRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreSaleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,13 @@ class StoreSaleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "name" => ['required', 'string'],
+            "purchase_price" => ['required', 'numeric'],
+            "price" => ['required', 'numeric', 'gt:purchase_price'],
+            "customer_id" => ['required', Rule::exists('users', 'id')],
+            "image" => ['nullable', 'string'],
+            "description" => ['required', 'string'],
+            "note" => ['nullable', 'string'],
         ];
     }
 }

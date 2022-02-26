@@ -68,7 +68,7 @@
                             Description
                         </th>
                         <td>
-                            {{ $sale->description }}
+                            {!! $sale->description !!}
                         </td>
                     </tr>
                     <tr>
@@ -81,12 +81,12 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.meal.fields.photo') }}
+                            Image
                         </th>
                         <td>
-                            @if($sale->photo)
-                                <a href="{{ $sale->photo->getUrl() }}" target="_blank">
-                                    <img src="{{ $sale->photo->getUrl('thumb') }}" width="50px" height="50px">
+                            @if($sale->image)
+                                <a href="{{ asset('images/' . $sale->image) }}" target="_blank">
+                                    <img src="{{ asset('images/' . $sale->image) }}" width="100px" height="100px">
                                 </a>
                             @endif
                         </td>

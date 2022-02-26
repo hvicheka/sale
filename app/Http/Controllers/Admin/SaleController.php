@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaleRequest;
+use App\Http\Requests\StoreSaleRequest;
+use App\Http\Traits\ImageUploadTrait;
 use App\Sale;
 use App\User;
 use Gate;
@@ -11,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SaleController extends Controller
 {
+    use ImageUploadTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +28,7 @@ class SaleController extends Controller
         $sales = Sale::query()
             ->with(['user', 'customer'])
             ->orderBy('id', 'DESC')
-            ->paginate('20');
+            ->paginate(20);
 
         return view('admin.sales.index', compact('sales'));
     }
@@ -47,18 +52,19 @@ class SaleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSaleRequest $request)
     {
         abort_if(Gate::denies('sale_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $sale = auth()->user()->sales()->create($request->all());
 
-        if ($request->input('photo', false)) {
-            $sale->addMedia(storage_path('tmp/uploads/' . $request->input('photo')))->toMediaCollection('photo');
-        }
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $sale->id]);
-        }
+        auth()->user()->sales()->create([
+            "name" => $request->name,
+            "purchase_price" => $request->purchase_price,
+            "price" => $request->price,
+            "customer_id" => $request->customer_id,
+            "image" => $this->upload($request->file('image')),
+            "description" => $request->description,
+            "note" => $request->note,
+        ]);
 
         return redirect()->route('admin.sales.index');
     }
@@ -93,9 +99,13 @@ class SaleController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sale $sale)
+    public function update(SaleRequest $request, Sale $sale)
     {
-        $sale->update($request->all());
+        $sale->update($request->validated());
+        if ($request->file('image')) {
+            $imageName = $this->updateImage($sale->image, $request->file('image'));
+            $sale->update(['image' => $imageName]);
+        }
         return redirect()->route('admin.sales.index');
     }
 

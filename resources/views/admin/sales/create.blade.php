@@ -20,11 +20,12 @@
     </div>
 
 
-
 @endsection
 
 @section('scripts')
     <script>
-
+        $(function () {
+            $("#date").datepicker({});
+        });
     </script>
 @endsection

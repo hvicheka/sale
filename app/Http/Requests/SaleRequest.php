@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateSaleRequest extends FormRequest
+class SaleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +25,13 @@ class UpdateSaleRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => ['string'],
-            "purchase_price" => ['numeric'],
-            "price" => ['numeric', 'gt:purchase_price'],
-            "customer_id" => [Rule::exists('users', 'id')],
-            "image" => ['nullable', 'string'],
-            "description" => ['string'],
+            "name" => ['required', 'string'],
+            "purchase_price" => ['required'],
+            "price" => ['required', 'gt:purchase_price'],
+            "customer_id" => ['required', Rule::exists('users', 'id')],
+            "description" => ['required', 'string'],
             "note" => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:5120'],  // 5MB
         ];
     }
 }
