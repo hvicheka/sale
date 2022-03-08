@@ -10,8 +10,8 @@ trait ImageUploadTrait
     public function upload($image = null)
     {
         $upload_path = public_path('images');
-        $image_name = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
         if ($image != null) {
+            $image_name = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
             if (!is_dir($upload_path)) {
                 mkdir($upload_path, 0755, true);
             }
@@ -31,21 +31,5 @@ trait ImageUploadTrait
         return $this->upload($image);
     }
 
-    public function upload_multiple($images = [])
-    {
-        foreach ($images as $image) {
-            $upload_path = public_path('images');
-            $image_name = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
-            if ($image != null) {
-                if (!is_dir($upload_path)) {
-                    mkdir($upload_path, 0755, true);
-                }
-                $image->move($upload_path, $image_name);
-            } else {
-                $image_name = 'def.png';
-            }
-            return $image_name;
-        }
-    }
 
 }

@@ -14,9 +14,9 @@
             Sale List
         </div>
         <div class="card-body">
-            <form action="{{ route('admin.sales.index') }}">
-                <input type="text" id="start_date" name="stat_date">
-                <input type="text" id="end_date" name="end_date">
+            <form action="{{ route('admin.sales.index') }}" id="filter_form">
+                <input type="text" id="start_date" value="{{$start_date}}" name="stat_date">
+                <input type="text" id="end_date" value="{{ $end_date }}" name="end_date">
                 <button class="btn btn-primary btn-sm" type="submit">Submit</button>
             </form>
         </div>
@@ -109,8 +109,25 @@
 @section('scripts')
     <script>
         $(function () {
-            $("#start_date").datepicker({});
-            $("#end_date").datepicker();
+            $("#start_date").datepicker({
+                dateFormat: 'dd-mm-yy',
+            });
+            $("#end_date").datepicker({
+                dateFormat: 'dd-mm-yy'
+            });
+            $("#start_date").on("change", function () {
+                $(this).attr('value', $(this).val())
+            });
+            $("#end_date").on("change", function () {
+                $(this).attr('value', $(this).val())
+            });
+
+            $('#filter_form').submit(function (e) {
+                e.preventDefault()
+                const start_date = $('#start_date').val()
+                const end_date = $('#end_date').val()
+                window.location.href = `{{ route('admin.sales.index') }}?start_date=${start_date}&end_date=${end_date}`
+            })
         });
     </script>
 @endsection
