@@ -1,28 +1,83 @@
 @extends('layouts.admin')
 @section('content')
-<div class="content">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    Dashboard
-                </div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
-                <div class="card-body">
-                    @if(session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Year', 'Sales', 'Amount'],
+                ['2004',  1000,      400],
+                ['2005',  1170,      460],
+                ['2006',  660,       1120],
+                ['2007',  1030,      540]
+            ]);
+
+            var options = {
+                title: 'Amount',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        Dashboard
+                    </div>
+
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-4 col-4">
+                                    <div class="small-box bg-info">
+                                        <div class="inner">
+                                            <h3>150</h3>
+                                            <p>MTD Sale</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-4">
+                                    <div class="small-box bg-success">
+                                        <div class="inner">
+                                            <h3>150</h3>
+                                            <p>MTD Profit</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-4">
+                                    <div class="small-box bg-primary">
+                                        <div class="inner">
+                                            <h3>150</h3>
+                                            <p>MTD Amount </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    @endif
-
-                    You are logged in!
+                    </div>
+                    <section class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="curve_chart" style="width: 1100px; height: 600px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 @section('scripts')
-@parent
+    @parent
 
 @endsection

@@ -115,3 +115,14 @@ table.dataTable thead .sorting_desc {
 .form-check.is-invalid ~ .invalid-feedback {
     display: block;
 }
+.small-box{
+    border-radius: 10px;
+    height: 150px;
+}
+.inner{
+    padding: 25px;
+}
+.inner h3{
+
+    font-size: 50px;
+}
