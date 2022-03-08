@@ -105,7 +105,7 @@ class SaleController extends Controller
     public function edit(Sale $sale)
     {
         $customers = $this->get_customers();
-        $date = Carbon::createFromFormat('Y-m-d', $sale->date)->format('m-d-Y');
+        $date = $sale->date->format('m-d-Y');
         return view('admin.sales.edit', compact('customers', 'sale', 'date'));
     }
 

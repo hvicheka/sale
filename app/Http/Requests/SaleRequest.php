@@ -30,6 +30,7 @@ class SaleRequest extends FormRequest
             "price" => ['required', 'gt:purchase_price'],
             "customer_id" => ['required', Rule::exists('users', 'id')],
             "description" => ['required', 'string'],
+            "date" => ['required', 'date'],
             "note" => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:5120'],  // 5MB
         ];
