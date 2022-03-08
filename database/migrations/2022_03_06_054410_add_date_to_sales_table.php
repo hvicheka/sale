@@ -14,7 +14,7 @@ class AddDateToSalesTable extends Migration
     public function up()
     {
         Schema::table('sales', function (Blueprint $table) {
-            $table->dateTime('date')->default(now())->after('price');
+            $table->date('date')->default(now())->after('price');
         });
     }
 

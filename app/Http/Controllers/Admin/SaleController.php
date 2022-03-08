@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleRequest;
-use App\Http\Requests\StoreSaleRequest;
 use App\Http\Traits\ImageUploadTrait;
 use App\Sale;
 use App\User;
+use Carbon\Carbon;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,16 +21,28 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('sale_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $start_date = $request->get('start_date') ?? Carbon::now()->startOfMonth()->format('d-m-Y');
+        $end_date = $request->get('end_date') ?? Carbon::now()->format('d-m-Y');
 
+        $start_date_filter = Carbon::createFromFormat('m-d-Y', $start_date)->format('Y-m-d');
+        $end_date_filter = Carbon::createFromFormat('m-d-Y', $end_date)->format('Y-m-d');
         $sales = Sale::query()
             ->with(['user', 'customer'])
             ->orderBy('id', 'DESC')
+            ->whereDate('date', '>=', $start_date_filter)
+            ->whereDate('date', '<=', $end_date_filter)
             ->paginate(20);
+        $total = Sale::query()
+            ->whereDate('date', '>=', $start_date_filter)
+            ->whereDate('date', '<=', $end_date_filter);
 
-        return view('admin.sales.index', compact('sales'));
+        $total_purchase_price = $total->sum('purchase_price');
+        $total_sale_price = $total->sum('price');
+        $total_profit = $total_sale_price - $total_purchase_price;
+        return view('admin.sales.index', compact('sales', 'start_date', 'end_date', 'total_purchase_price', 'total_sale_price', 'total_profit'));
     }
 
     /**
@@ -43,7 +55,9 @@ class SaleController extends Controller
         abort_if(Gate::denies('sale_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $sale = new Sale();
         $customers = $this->get_customers();
-        return view('admin.sales.create', compact('sale', 'customers'));
+        $date = Carbon::now()->format('m-d-Y');
+
+        return view('admin.sales.create', compact('sale', 'customers', 'date'));
     }
 
     /**
@@ -52,14 +66,16 @@ class SaleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSaleRequest $request)
+    public function store(SaleRequest $request)
     {
+//        dd($request->date);
         abort_if(Gate::denies('sale_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         auth()->user()->sales()->create([
             "name" => $request->name,
             "purchase_price" => $request->purchase_price,
             "price" => $request->price,
+            "date" => $request->date,
             "customer_id" => $request->customer_id,
             "image" => $this->upload($request->file('image')),
             "description" => $request->description,
@@ -89,7 +105,8 @@ class SaleController extends Controller
     public function edit(Sale $sale)
     {
         $customers = $this->get_customers();
-        return view('admin.sales.edit', compact('customers', 'sale'));
+        $date = Carbon::createFromFormat('Y-m-d', $sale->date)->format('m-d-Y');
+        return view('admin.sales.edit', compact('customers', 'sale', 'date'));
     }
 
     /**
