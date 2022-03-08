@@ -35,7 +35,14 @@ class SaleController extends Controller
             ->whereDate('date', '>=', $start_date_filter)
             ->whereDate('date', '<=', $end_date_filter)
             ->paginate(20);
-        return view('admin.sales.index', compact('sales', 'start_date', 'end_date'));
+        $total = Sale::query()
+            ->whereDate('date', '>=', $start_date_filter)
+            ->whereDate('date', '<=', $end_date_filter);
+
+        $total_purchase_price = $total->sum('purchase_price');
+        $total_sale_price = $total->sum('price');
+        $total_profit = $total_sale_price - $total_purchase_price;
+        return view('admin.sales.index', compact('sales', 'start_date', 'end_date', 'total_purchase_price', 'total_sale_price', 'total_profit'));
     }
 
     /**
@@ -98,7 +105,7 @@ class SaleController extends Controller
     public function edit(Sale $sale)
     {
         $customers = $this->get_customers();
-        $date = Carbon::createFromFormat('m-d-Y', $sale->date)->format('m-d-Y');
+        $date = $sale->date->format('m-d-Y');
         return view('admin.sales.edit', compact('customers', 'sale', 'date'));
     }
 

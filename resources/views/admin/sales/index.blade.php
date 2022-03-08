@@ -15,9 +15,16 @@
         </div>
         <div class="card-body">
             <form action="{{ route('admin.sales.index') }}" id="filter_form">
-                <input type="text" id="start_date" value="{{$start_date}}" name="stat_date">
-                <input type="text" id="end_date" value="{{ $end_date }}" name="end_date">
-                <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+                <div class="row">
+                    <div class="col-2">
+                        <input type="text" id="start_date" value="{{$start_date}}" class="form-control"
+                               name="stat_date">
+                    </div>
+                    <div class="col-2">
+                        <input type="text" id="end_date" value="{{ $end_date }}" class="form-control" name="end_date">
+                    </div>
+                    <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+                </div>
             </form>
         </div>
         <div class="card-body">
@@ -27,6 +34,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Date</th>
                         <th>Customer Name</th>
                         <th>Purchase Price</th>
                         <th>Sale Price</th>
@@ -44,6 +52,9 @@
                             </td>
                             <td>
                                 {{ $sale->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $sale->date->format('m-d-Y') }}
                             </td>
                             <td class="category-name">
                                 {{ $sale->customer->name ?? '' }}
@@ -85,8 +96,15 @@
                                 @endcan
 
                             </td>
-
                         </tr>
+                        @if($loop->last)
+                            <tr>
+                                <td colspan="4" class="text-right">Total</td>
+                                <td>{{ $total_purchase_price }}</td>
+                                <td>{{ $total_sale_price }}</td>
+                                <td>{{ $total_profit }}</td>
+                            </tr>
+                        @endif
                     @empty
                         <tr class="empty-message">
                             <td colspan="8" class="text-center">

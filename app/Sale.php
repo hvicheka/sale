@@ -20,6 +20,9 @@ class Sale extends Model
         'image' => 'def.png'
     ];
 
+    protected $dates = ['date'];
+
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

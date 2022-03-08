@@ -26,6 +26,13 @@
 
 @section('scripts')
     <script>
-
+        $(document).ready(function () {
+            $("#date").datepicker({
+                dateFormat: 'dd-mm-yy'
+            });
+            $("#date").on("change", function () {
+                $(this).attr('value', $(this).val())
+            });
+        })
     </script>
 @endsection

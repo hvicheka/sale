@@ -52,7 +52,7 @@
 <div class="form-group">
     <label class="required" for="date">Date</label>
     <input class="form-control  @error('date') is-invalid @enderror" type="text" name="date" id="date"
-           value="{{ old('price', $sale->date) }}">
+           value="{{ old('price', $date) }}">
     @error('date')
     <div class="invalid-feedback">
         {{ $message }}
