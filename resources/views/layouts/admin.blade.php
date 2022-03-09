@@ -20,6 +20,24 @@
 
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet"/>
 
+    <style>
+
+        .small-box {
+            border-radius: 10px;
+            height: 150px;
+        }
+
+        .inner {
+            padding: 25px;
+        }
+
+        .inner h3 {
+
+            font-size: 50px;
+        }
+
+    </style>
+
     @yield('styles')
 </head>
 

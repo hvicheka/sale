@@ -126,3 +126,16 @@ table.dataTable thead .sorting_desc {
 
     font-size: 50px;
 }
+
+
+.small-box{
+    border-radius: 10px;
+    height: 150px;
+}
+.inner{
+    padding: 25px;
+}
+.inner h3{
+
+    font-size: 50px;
+}
