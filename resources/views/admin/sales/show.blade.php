@@ -44,7 +44,7 @@
                             Purchase Price
                         </th>
                         <td>
-                            {{ $sale->purchase_price }}
+                            {{ number_format($sale->purchase_price, 2)." $" }}
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +52,7 @@
                             Sale Price
                         </th>
                         <td>
-                            {{ $sale->price }}
+                            {{ number_format($sale->price, 2)." $" }}
                         </td>
                     </tr>
                     <tr>
@@ -60,7 +60,7 @@
                             Profit
                         </th>
                         <td>
-                            {{ $sale->profit }}
+                            {{ number_format($sale->price - $sale->purchase_price, 2)." $" }}
                         </td>
                     </tr>
                     <tr>

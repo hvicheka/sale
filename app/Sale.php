@@ -42,4 +42,13 @@ class Sale extends Model
     {
         $this->attributes['date'] = Carbon::createFromFormat('m-d-Y', $value)->format('Y-m-d H:m:s');
     }
+    public function getPriceAttribute($price)
+    {
+        return $this->attributes['price'] = number_format($price, 2);
+    }
+
+    public function getPurchasePriceAttribute($price)
+    {
+        return $this->attributes['purchase_price'] = number_format($price, 2);
+    }
 }

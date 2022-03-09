@@ -60,13 +60,13 @@
                                 {{ $sale->customer->name ?? '' }}
                             </td>
                             <td>
-                                {{ $sale->purchase_price ?? '' }}
+                                {{ number_format($sale->price, 2)." $"}}
                             </td>
                             <td>
-                                {{ $sale->price ?? '' }}
+                                {{number_format($sale->purchase_price, 2)." $" }}
                             </td>
                             <td>
-                                {{ $sale->profit ?? '' }}
+                                {{ number_format($sale->price - $sale->purchase_price, 2)." $" }}
                             </td>
 
                             <td>
@@ -100,9 +100,9 @@
                         @if($loop->last)
                             <tr>
                                 <td colspan="4" class="text-right">Total</td>
-                                <td>{{ $total_purchase_price }}</td>
-                                <td>{{ $total_sale_price }}</td>
-                                <td>{{ $total_profit }}</td>
+                                <td>{{ number_format($total_purchase_price, 2)." $"}}</td>
+                                <td>{{ number_format($total_sale_price, 2)." $" }}</td>
+                                <td>{{ number_format($total_profit, 2)." $" }}</td>
                             </tr>
                         @endif
                     @empty
