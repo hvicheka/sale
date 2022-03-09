@@ -32,12 +32,10 @@ class SaleController extends Controller
         $sales = Sale::query()
             ->with(['user', 'customer'])
             ->orderBy('id', 'DESC')
-            ->whereDate('date', '>=', $start_date_filter)
-            ->whereDate('date', '<=', $end_date_filter)
+            ->whereBetween('date', [$start_date_filter, $end_date_filter])
             ->paginate(20);
         $total = Sale::query()
-            ->whereDate('date', '>=', $start_date_filter)
-            ->whereDate('date', '<=', $end_date_filter);
+            ->whereBetween('date', [$start_date_filter, $end_date_filter]);
 
         $total_purchase_price = $total->sum('purchase_price');
         $total_sale_price = $total->sum('price');
