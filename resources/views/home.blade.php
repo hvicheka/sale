@@ -39,7 +39,7 @@
                                 <div class="col-lg-4 col-4">
                                     <div class="small-box bg-info">
                                         <div class="inner">
-                                            <h3>${{ number_format($total_purchase_price,2) }}</h3>
+                                            <h3>$ {{ number_format($total_purchase_price,2) }}</h3>
                                             <p>MTD Purchase Price</p>
                                         </div>
                                     </div>
@@ -47,7 +47,7 @@
                                 <div class="col-lg-4 col-4">
                                     <div class="small-box bg-success">
                                         <div class="inner">
-                                            <h3>${{ number_format($total_sale_price,2) }}</h3>
+                                            <h3>$ {{ number_format($total_sale_price,2) }}</h3>
                                             <p>MTD Sale Price</p>
                                         </div>
                                     </div>
@@ -55,7 +55,7 @@
                                 <div class="col-lg-4 col-4">
                                     <div class="small-box bg-primary">
                                         <div class="inner">
-                                            <h3>${{ number_format($total_profit,2) }}</h3>
+                                            <h3>$ {{ number_format($total_profit,2) }}</h3>
                                             <p>MTD Profit</p>
                                         </div>
                                     </div>
