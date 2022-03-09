@@ -2,22 +2,22 @@
 @section('content')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', {'packages': ['corechart']});
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Year', 'Sales', 'Amount'],
-                ['2004',  1000,      400],
-                ['2005',  1170,      460],
-                ['2006',  660,       1120],
-                ['2007',  1030,      540]
+                ['2004', 1000, 400],
+                ['2005', 1170, 460],
+                ['2006', 660, 1120],
+                ['2007', 1030, 540]
             ]);
 
             var options = {
                 title: 'Amount',
                 curveType: 'function',
-                legend: { position: 'bottom' }
+                legend: {position: 'bottom'}
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
@@ -39,24 +39,24 @@
                                 <div class="col-lg-4 col-4">
                                     <div class="small-box bg-info">
                                         <div class="inner">
-                                            <h3>150</h3>
-                                            <p>MTD Sale</p>
+                                            <h3>$ {{ number_format($total_purchase_price,2) }}</h3>
+                                            <p>MTD Purchase Price</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-4">
                                     <div class="small-box bg-success">
                                         <div class="inner">
-                                            <h3>150</h3>
-                                            <p>MTD Profit</p>
+                                            <h3>$ {{ number_format($total_sale_price,2) }}</h3>
+                                            <p>MTD Sale Price</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-4">
                                     <div class="small-box bg-primary">
                                         <div class="inner">
-                                            <h3>150</h3>
-                                            <p>MTD Amount </p>
+                                            <h3>$ {{ number_format($total_profit,2) }}</h3>
+                                            <p>MTD Profit</p>
                                         </div>
                                     </div>
                                 </div>
