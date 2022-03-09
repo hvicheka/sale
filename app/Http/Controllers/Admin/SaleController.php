@@ -103,7 +103,7 @@ class SaleController extends Controller
     public function edit(Sale $sale)
     {
         $customers = $this->get_customers();
-        $date = $sale->date->format('m-d-Y');
+        $date = $sale->date->format('d-m-Y');
         return view('admin.sales.edit', compact('customers', 'sale', 'date'));
     }
 

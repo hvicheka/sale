@@ -54,19 +54,19 @@
                                 {{ $sale->name ?? '' }}
                             </td>
                             <td>
-                                {{ $sale->date->format('m-d-Y') }}
+                                {{ $sale->date->format('d-m-Y') }}
                             </td>
                             <td class="category-name">
                                 {{ $sale->customer->name ?? '' }}
                             </td>
                             <td>
-                                {{ number_format($sale->price, 2)." $"}}
+                                ${{ number_format($sale->price, 2)}}
                             </td>
                             <td>
-                                {{number_format($sale->purchase_price, 2)." $" }}
+                                ${{number_format($sale->purchase_price, 2) }}
                             </td>
                             <td>
-                                {{ number_format($sale->price - $sale->purchase_price, 2)." $" }}
+                                ${{ number_format($sale->price - $sale->purchase_price, 2) }}
                             </td>
 
                             <td>
@@ -100,9 +100,9 @@
                         @if($loop->last)
                             <tr>
                                 <td colspan="4" class="text-right">Total</td>
-                                <td>{{ number_format($total_purchase_price, 2)." $"}}</td>
-                                <td>{{ number_format($total_sale_price, 2)." $" }}</td>
-                                <td>{{ number_format($total_profit, 2)." $" }}</td>
+                                <td>${{ number_format($total_purchase_price, 2)}}</td>
+                                <td>${{ number_format($total_sale_price, 2) }}</td>
+                                <td>${{ number_format($total_profit, 2) }}</td>
                             </tr>
                         @endif
                     @empty
