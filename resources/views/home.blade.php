@@ -7,15 +7,16 @@
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales', 'Amount'],
-                ['2004', 1000, 400],
-                ['2005', 1170, 460],
-                ['2006', 660, 1120],
-                ['2007', 1030, 540]
+                ['Year', 'Purchase Price', 'Price', 'Profit'],
+                @php
+                    foreach($chart_data as $d) {
+                        echo "['".$d->date->format('d')."', ".$d->purchase_price.", " . $d->price ."," . $d->profit."],";
+                    }
+                @endphp
             ]);
 
             var options = {
-                title: 'Amount',
+                title: 'Profit',
                 curveType: 'function',
                 legend: {position: 'bottom'}
             };
