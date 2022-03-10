@@ -44,7 +44,7 @@
                             Purchase Price
                         </th>
                         <td>
-                            {{ number_format($sale->purchase_price, 2)." $" }}
+                            {{ "$ ".number_format($sale->purchase_price, 2) }}
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +52,7 @@
                             Sale Price
                         </th>
                         <td>
-                            {{ number_format($sale->price, 2)." $" }}
+                            {{ "$ ".number_format($sale->price, 2)}}
                         </td>
                     </tr>
                     <tr>
@@ -60,14 +60,23 @@
                             Profit
                         </th>
                         <td>
-                            {{ number_format($sale->price - $sale->purchase_price, 2)." $" }}
+                            {{ "$ ".number_format($sale->price - $sale->purchase_price, 2)}}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            Description
+                            Date
                         </th>
                         <td>
+                            {{ $sale->date->format('d-m-Y')}}
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <th>
+                            Description
+                        </th>
+                        <td >
                             {!! $sale->description !!}
                         </td>
                     </tr>
@@ -102,4 +111,16 @@
         </div>
     </div>
 
+@endsection
+@section('scripts')
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .then( editor => {
+                console.log( editor );
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
 @endsection
