@@ -23,8 +23,9 @@ class HomeController
         $total_sale_price = $total->sum('price');
         $total_profit = $total_sale_price - $total_purchase_price;
 
-        $chart_data = $total->select(['date', 'purchase_price', 'price'])
+        $chart_data = $total->select('purchase_price', 'price', DB::raw("DAY(date) as day"))
             ->get();
+
         return view('home', compact('total_purchase_price', 'total_sale_price', 'total_profit', 'chart_data'));
     }
 }
