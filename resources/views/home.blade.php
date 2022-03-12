@@ -4,12 +4,17 @@
     <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
         google.charts.setOnLoadCallback(drawChart);
+
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Year', 'Purchase Price', 'Sale Price', 'Profit'],
                 @php
-                    foreach($chart_data as $d) {
-                        echo "['".$d->day."', ".$d->purchase_price.", " . $d->price ."," . $d->profit."],";
+                    if(count($chart_data) > 0){
+                        foreach($chart_data as $d) {
+                            echo "['".$d->day."', ".$d->purchase_price.", " . $d->price ."," . $d->profit."],";
+                        }
+                    }else{
+                        echo (0);
                     }
                 @endphp
             ]);
