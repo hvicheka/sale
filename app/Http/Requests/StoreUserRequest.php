@@ -22,7 +22,7 @@ class StoreUserRequest extends FormRequest
             'name' => ['required'],
             'phone' => ['required'],
             'email' => ['required', 'unique:users'],
-            'password' => ['required'],
+            'password' => ['nullable'],
             'roles.*' => ['integer'],
             'roles' => ['required', 'array'],
         ];
