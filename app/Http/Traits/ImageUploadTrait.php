@@ -22,14 +22,17 @@ trait ImageUploadTrait
         return $image_name;
     }
 
-    public function updateImage($old_image = 'abc.png', $image = null)
+    public function updateImage($old_image, $image = null)
     {
-        $path = public_path() . '/images/' . $old_image;
-        if (file_exists($path)) {
-            unlink($path);
+        try {
+            $path = public_path() . '/images/' . $old_image;
+            if ($old_image != 'def.png' && file_exists($path)) {
+                unlink($path);
+            }
+        } catch (\Exception $e) {
+
         }
         return $this->upload($image);
     }
-
 
 }
